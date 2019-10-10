@@ -156,9 +156,15 @@ def run_command(destination, command, username=None):
     slack.post_message(destination_id, message, pre=True, username=username)
 
 def send_message(destination, message, pre=False, username=None):
-    destination_id = utils.get_destination_id(destination)
+    try:
+        destination_id = utils.get_destination_id(destination)
+    except errors.SourceDoesNotExistError  as e:
+        destination_id = destination
     slack.post_message(destination_id, message, pre=pre, username=username)
 
 def upload_file(destination, path):
-    destination_id = utils.get_destination_id(destination)
+    try:
+        destination_id = utils.get_destination_id(destination)
+    except errors.SourceDoesNotExistError  as e:
+        destination_id = destination
     utils.upload_file(path, destination_id)
